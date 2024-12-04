@@ -1,0 +1,4 @@
+Django
+sentry-sdk[django]
+Pillow
+djangorestframework
