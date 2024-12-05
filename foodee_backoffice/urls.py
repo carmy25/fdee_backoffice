@@ -15,16 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.conf import settings
 from django.urls import include, path
 from django.conf.urls.static import static
 
-import order
-import user.urls
+from foodee_backoffice import settings
 from foodee_backoffice.admin import admin
 
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path("admin/", admin.site.urls),
-    path("user/", include(user.urls)),
-    path('', include(order.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path("user/", include('user.urls')),
+    path("order/", include('order.urls')),
+
 ]
