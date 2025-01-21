@@ -1,3 +1,4 @@
+from functools import reduce
 from django.db import models
 from django.utils import timezone
 
@@ -42,6 +43,11 @@ class Receipt(models.Model):
         verbose_name = 'чек'
         verbose_name_plural = 'чеки'
         ordering = ('created_at',)
+
+    class PaymentMethod(models.TextChoices):
+        CARD = 'CARD', 'Картка'
+        CASH = 'CASH', 'Готівка'
+
     number = models.PositiveIntegerField(
         verbose_name='номер', null=True, default=True)
     created_at = models.DateTimeField(
@@ -50,8 +56,20 @@ class Receipt(models.Model):
     updated_at = models.DateTimeField(
         verbose_name='дата оновлення', default=timezone.now)
 
+    place = models.ForeignKey('place.Place',
+                              null=True, blank=True,
+                              verbose_name='місце', on_delete=models.SET_NULL)
+    payment_method = models.CharField(
+        max_length=10, choices=PaymentMethod, default=PaymentMethod.CARD)
+
     def __str__(self):
         return '-' if self.number is None else str(self.number)
+
+    @property
+    def price(self):
+        return sum(
+            [p.total_price for p in self.product_items.all()]
+        )
 
 
 class Product(ModelWithImage):
@@ -84,3 +102,6 @@ class ProductItem(models.Model):
 
     def __str__(self):
         return self.name
+
+    def total_price(self):
+        return self.amount * self.product_type.price

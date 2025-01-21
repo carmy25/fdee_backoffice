@@ -14,7 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
 class ReceiptAdmin(admin.ModelAdmin):
     ordering = ['created_at']
     exclude = ('updated_at',)
-    list_display = ['number', 'created_at', 'updated_at']
+    list_display = ['number', 'place', 'created_at', 'updated_at']
 
 
 admin.site.register(Category, CategoryAdmin)

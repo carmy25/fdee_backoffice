@@ -15,3 +15,12 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class ReceiptViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows products to be viewed.
+    """
+    queryset = Receipt.objects.all()
+    serializer_class = ReceiptSerializer
+    permission_classes = [permissions.IsAuthenticated]
