@@ -68,7 +68,7 @@ class Receipt(models.Model):
     @property
     def price(self):
         return sum(
-            [p.total_price for p in self.product_items.all()]
+            [p.total_price() for p in self.product_items.all()]
         )
 
 
@@ -80,7 +80,9 @@ class Product(ModelWithImage):
     price = models.DecimalField(
         verbose_name='ціна', max_digits=6, decimal_places=2)
     category = models.ForeignKey(
-        Category, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='категорія')
+        Category, on_delete=models.SET_NULL, null=True, blank=True,
+        verbose_name='категорія',
+        related_name='products')
 
     def __str__(self):
         return self.name
@@ -95,13 +97,11 @@ class ProductItem(models.Model):
         Product, on_delete=models.CASCADE, verbose_name='продукт', related_name='product_items')
     receipt = models.ForeignKey(
         Receipt, on_delete=models.CASCADE, verbose_name='чек', related_name='product_items')
-    price = models.DecimalField(
-        verbose_name='ціна', max_digits=6, decimal_places=2)
     amount = models.PositiveSmallIntegerField(
         verbose_name='кількість')
 
     def __str__(self):
-        return self.name
+        return self.product_type.name
 
     def total_price(self):
         return self.amount * self.product_type.price

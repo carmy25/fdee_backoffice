@@ -1,3 +1,13 @@
 from django.test import TestCase
 
-# Create your tests here.
+from .models import Receipt
+
+
+class ReceiptTestCase(TestCase):
+    fixtures = ['test.json']
+
+    def setUp(self):
+        pass
+
+    def test_create_receipt(self):
+        pass
