@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from drf_writable_nested.serializers import WritableNestedModelSerializer
+
 
 from place.models import Place
 
@@ -58,7 +60,7 @@ class ProductItemSerializer(serializers.ModelSerializer):
         )
 
 
-class ReceiptSerializer(serializers.ModelSerializer):
+class ReceiptSerializer(WritableNestedModelSerializer):
     place = serializers.PrimaryKeyRelatedField(queryset=Place.objects.all())
     product_items = ProductItemSerializer(many=True)
 
@@ -77,6 +79,6 @@ class ReceiptSerializer(serializers.ModelSerializer):
             ProductItem.objects.create(receipt=receipt, **product_item_data)
         return receipt
 
-    def update(self, instance, validated_data):
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     instance.save()
+    #     return instance
