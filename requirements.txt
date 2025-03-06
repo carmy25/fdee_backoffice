@@ -1,4 +1,5 @@
 Django
+psycopg
 sentry-sdk[django]
 Pillow
 djangorestframework
