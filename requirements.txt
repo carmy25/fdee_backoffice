@@ -5,3 +5,4 @@ Pillow
 djangorestframework
 drf-writable-nested
 gunicorn
+psycopg2-binary
