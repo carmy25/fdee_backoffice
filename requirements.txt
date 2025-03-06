@@ -3,3 +3,4 @@ sentry-sdk[django]
 Pillow
 djangorestframework
 drf-writable-nested
+gunicorn

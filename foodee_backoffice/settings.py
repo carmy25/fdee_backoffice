@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -139,3 +140,47 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication'
     ]
 }
+
+APP_NAME = os.environ.get("FLY_APP_NAME")
+APP_VERSION = os.environ.get("FLY_APP_VERSION")
+APP_REVISION = os.environ.get("FLY_APP_REVISION")
+APP_REGION = os.environ.get("FLY_REGION")
+APP_INSTANCE = os.environ.get("FLY_INSTANCE")
+APP_INSTANCE_MEMORY = os.environ.get("FLY_INSTANCE_MEMORY")
+APP_INSTANCE_CPU = os.environ.get("FLY_INSTANCE_CPU")
+APP_INSTANCE_COUNT = os.environ.get("FLY_INSTANCE_COUNT")
+APP_INSTANCE_STORAGE = os.environ.get("FLY_INSTANCE_STORAGE")
+APP_INSTANCE_REGION = os.environ.get("FLY_REGION")
+
+if APP_NAME is not None:
+    # running on fly.io
+    DEBUG = False
+    ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("FLY_PG_DATABASE"),
+            "USER": os.environ.get("FLY_PG_USERNAME"),
+            "PASSWORD": os.environ.get("FLY_PG_PASSWORD"),
+            "HOST": os.environ.get("FLY_PG_HOST"),
+            "PORT": os.environ.get("FLY_PG_PORT"),
+        }
+    }
+    SECRET_KEY = os.environ.get("FLY_SECRET_KEY")
+    REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = [
+        'rest_framework.authentication.TokenAuthentication'
+    ]
+    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
+        'rest_framework.renderers.JSONRenderer'
+    ]
+    REST_FRAMEWORK["DEFAULT_PARSER_CLASSES"] = [
+        'rest_framework.parsers.JSONParser'
+    ]
+    REST_FRAMEWORK["UNICODE_JSON"] = True
+    REST_FRAMEWORK["DEFAULT_PAGINATION_CLASS"] = 'rest_framework.pagination.PageNumberPagination'
+    REST_FRAMEWORK["PAGE_SIZE"] = 10
+    REST_FRAMEWORK["DEFAULT_FILTER_BACKENDS"] = [
+        'django_filters.rest_framework.DjangoFilterBackend']

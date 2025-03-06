@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for foodee-backoffice on 2024-11-14T10:07:15+02:00
+# fly.toml app configuration file generated for foodee-backoffice on 2025-03-06T18:00:25+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'foodee-backoffice'
-primary_region = 'fra'
+primary_region = 'otp'
 console_command = '/code/manage.py shell'
 
 [build]
@@ -21,9 +21,7 @@ console_command = '/code/manage.py shell'
   processes = ['app']
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
+  size = 'shared-cpu-1x'
 
 [[statics]]
   guest_path = '/code/static'

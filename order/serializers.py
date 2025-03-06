@@ -42,7 +42,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('id', 'name', 'price', 'category')
 
     def get_category(self, obj):
         splited_name = obj.category.full_name.split('->')
@@ -63,13 +63,15 @@ class ProductItemSerializer(serializers.ModelSerializer):
 class ReceiptSerializer(WritableNestedModelSerializer):
     place = serializers.PrimaryKeyRelatedField(queryset=Place.objects.all())
     product_items = ProductItemSerializer(many=True)
+    place_name = serializers.SlugRelatedField(
+        read_only=True, source='place', slug_field='name')
 
     class Meta:
         model = Receipt
         fields = (
             'id',
             'place', 'number', 'created_at', 'payment_method',
-            'price', 'product_items',
+            'price', 'product_items', 'place_name'
         )
 
     def create(self, validated_data):
