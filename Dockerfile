@@ -17,4 +17,6 @@ RUN set -ex && \
 COPY . /code
 
 EXPOSE 8000
-CMD ["sh", "-c", "python manage.py migrate && gunicorn --bind :8000 --workers 2 foodee_backoffice.wsgi"]
+RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate --noinput
+CMD ["sh", "-c", "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 --workers 2 foodee_backoffice.wsgi"]

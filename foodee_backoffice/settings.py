@@ -126,6 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -143,6 +144,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+
 APP_NAME = os.environ.get("FLY_APP_NAME")
 APP_VERSION = os.environ.get("FLY_APP_VERSION")
 APP_REVISION = os.environ.get("FLY_APP_REVISION")
@@ -158,14 +160,11 @@ if APP_NAME is not None:
     # running on fly.io
     print(f"Running on fly.io: {APP_NAME}")
     # print env variables for debugging
-    env_vars = os.environ
-    for key in env_vars:
-        print(f"{key}: {env_vars[key]}")
-    DEBUG = False
     ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
+    CSRF_TRUSTED_ORIGINS = [f"https://{APP_NAME}.fly.dev"]
+
     DATABASES["default"] = dj_database_url.config(
         conn_max_age=600)
-    SECRET_KEY = os.environ.get("FLY_SECRET_KEY")
     REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = [
         'rest_framework.authentication.TokenAuthentication'
     ]
