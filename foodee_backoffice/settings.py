@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 FIXTURE_DIRS = [BASE_DIR / "fixtures"]
@@ -154,18 +156,15 @@ APP_INSTANCE_REGION = os.environ.get("FLY_REGION")
 
 if APP_NAME is not None:
     # running on fly.io
+    print(f"Running on fly.io: {APP_NAME}")
+    # print env variables for debugging
+    env_vars = os.environ
+    for key in env_vars:
+        print(f"{key}: {env_vars[key]}")
     DEBUG = False
     ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("FLY_PG_DATABASE"),
-            "USER": os.environ.get("FLY_PG_USERNAME"),
-            "PASSWORD": os.environ.get("FLY_PG_PASSWORD"),
-            "HOST": os.environ.get("FLY_PG_HOST"),
-            "PORT": os.environ.get("FLY_PG_PORT"),
-        }
-    }
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=600)
     SECRET_KEY = os.environ.get("FLY_SECRET_KEY")
     REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = [
         'rest_framework.authentication.TokenAuthentication'
