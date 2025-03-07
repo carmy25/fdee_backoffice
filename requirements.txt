@@ -2,7 +2,7 @@ Django
 psycopg[binary]
 sentry-sdk[django]
 Pillow
-django_filters
+django-filter
 djangorestframework
 drf-writable-nested
 gunicorn
