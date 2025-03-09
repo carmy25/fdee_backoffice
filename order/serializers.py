@@ -61,7 +61,8 @@ class ProductItemSerializer(serializers.ModelSerializer):
 
 
 class ReceiptSerializer(WritableNestedModelSerializer):
-    place = serializers.PrimaryKeyRelatedField(queryset=Place.objects.all())
+    place = serializers.PrimaryKeyRelatedField(
+        queryset=Place.objects.all(), required=False)
     product_items = ProductItemSerializer(many=True)
     place_name = serializers.SlugRelatedField(
         read_only=True, source='place', slug_field='name')

@@ -37,6 +37,16 @@ class BaseTestCase(APITestCase):
 
 class ReceiptTestCase(BaseTestCase):
 
+    def test_empty_receipt_creation(self):
+        response = self.client.post(
+            reverse('receipt-list'),
+            data={
+                'product_items': [],
+            },
+            format='json'
+        )
+        self.assertEqual(response.status_code, 201)
+
     def test_receipt_happy_path(self):
         # create receipts
         response = self.client.post(
