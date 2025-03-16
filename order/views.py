@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework import permissions, viewsets
+from datetime import date
 
 from .models import Category, Product, Receipt
 from .serializers import CategoryProductsSerializer, CategorySerializer, ProductSerializer, ReceiptSerializer
@@ -21,9 +22,11 @@ class ReceiptViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows receipts to be viewed and updated.
     """
-    queryset = Receipt.objects.all()
     serializer_class = ReceiptSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Receipt.objects.filter(created_at__date=date.today())
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
