@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import sentry_sdk
 
 import dj_database_url
 
@@ -162,6 +163,15 @@ APP_INSTANCE_REGION = os.environ.get("FLY_REGION")
 if APP_NAME is not None:
     # running on fly.io
     print(f"Running on fly.io: {APP_NAME}")
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=os.environ.get("SENTRY_DSN"),
+        integrations=[sentry_sdk.DjangoIntegration()],
+        # Add data like request headers and IP for users,
+        # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+        send_default_pii=True,
+    )
     # print env variables for debugging
     ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
     CSRF_TRUSTED_ORIGINS = [f"https://{APP_NAME}.fly.dev"]
