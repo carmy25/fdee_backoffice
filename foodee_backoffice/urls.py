@@ -27,5 +27,6 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path("user/", include('user.urls')),
     path("order/", include('order.urls')),
     path("place/", include('place.urls')),
+    path('sentry-debug/', lambda request: 1 / 0),
 
 ]
