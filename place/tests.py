@@ -13,7 +13,7 @@ class PlaceTestCase(APITestCase):
 
     def test_create_place(self):
         response = self.client.post(
-            '/place/places/',
+            '/place/places',
             data={'name': 'Test place'},
             format='json'
         )
@@ -23,7 +23,7 @@ class PlaceTestCase(APITestCase):
     def test_retrieve_places(self):
         place1 = Place.objects.create(name='Place 1')
         place2 = Place.objects.create(name='Place 2')
-        response = self.client.get('/place/places/')
+        response = self.client.get('/place/places')
         self.assertEqual(response.status_code, 200)
         self.assertGreaterEqual(len(response.data), 2)
         expected_data = [

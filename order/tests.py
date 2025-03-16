@@ -1,3 +1,4 @@
+from decimal import Decimal
 from functools import partial
 from django.urls import reverse
 from rest_framework.test import APIRequestFactory, APITestCase
@@ -42,6 +43,7 @@ class ReceiptTestCase(BaseTestCase):
             reverse('receipt-list'),
             data={
                 'product_items': [],
+                'place': 1,
             },
             format='json'
         )
@@ -60,11 +62,11 @@ class ReceiptTestCase(BaseTestCase):
         self.assertEqual(response.data['place_name'], 'Зал 1, Стіл 2')
 
         # list receipts
-        self.list_action(ReceiptViewSet, '/order/receipts/')
+        self.list_action(ReceiptViewSet, '/order/receipts')
 
         # receipt update payment method
         request = self.factory.patch(
-            f'/order/receipts/{receipt_id}/',
+            f'/order/receipts/{receipt_id}',
             {'payment_method': 'CASH'},
             format='json')
         self.force_authenticate(request)
@@ -74,12 +76,13 @@ class ReceiptTestCase(BaseTestCase):
 
         # update receipt product items
         request = self.factory.patch(
-            f'/order/receipts/{receipt_id}/',
+            f'/order/receipts/{receipt_id}',
             {'product_items':
                 [
                     {'product_type': 8, 'amount': 3},
                     {'product_type': 9, 'amount': 1}
                 ],
+             'place': 1
              },
             format='json')
         self.force_authenticate(request)
@@ -87,8 +90,8 @@ class ReceiptTestCase(BaseTestCase):
             {'patch': 'partial_update'})(request, pk=receipt_id)
         self.assertListEqual(
             response.data['product_items'],
-            [{'product_type': 8, 'amount': 3},
-             {'product_type': 9, 'amount': 1}])
+            [{'product_type': 8, 'amount': 3, 'name': 'Овочевий', 'price': Decimal('70.00'), },
+             {'product_type': 9, 'amount': 1, 'name': 'Курячий бульйон з лапшою', 'price': Decimal('65.00'), }])
 
         self.assertEqual(response.status_code, 200)
 

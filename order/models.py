@@ -47,6 +47,10 @@ class Receipt(models.Model):
         CARD = 'CARD', 'Картка'
         CASH = 'CASH', 'Готівка'
 
+    class Status(models.TextChoices):
+        OPEN = 'OPEN', 'Відкритий'
+        CLOSED = 'CLOSED', 'Зaкритий'
+
     number = models.PositiveIntegerField(
         verbose_name='номер', null=True, blank=True)
     created_at = models.DateTimeField(
@@ -60,9 +64,11 @@ class Receipt(models.Model):
                               verbose_name='місце', on_delete=models.SET_NULL)
     payment_method = models.CharField(
         max_length=10, choices=PaymentMethod, default=PaymentMethod.CARD)
+    status = models.CharField(
+        max_length=10, choices=Status, default=Status.OPEN)
 
     def __str__(self):
-        return '-' if self.number is None else str(self.number)
+        return 'self.id' if self.number is None else str(self.number)
 
     @property
     def price(self):
@@ -98,6 +104,8 @@ class ProductItem(models.Model):
         Receipt, on_delete=models.CASCADE, verbose_name='чек', related_name='product_items')
     amount = models.PositiveSmallIntegerField(
         verbose_name='кількість')
+    name = models.CharField(verbose_name='назва',
+                            max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.product_type.name

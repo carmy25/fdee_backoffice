@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-6$@12h^4)zqn#y3s7u*ok)5qm0o2veui4k7bn_tr-1f78pe^)_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+APPEND_SLASH = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -136,6 +137,8 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+    'EXCEPTION_HANDLER': 'order.exceptions.custom_exception_handler',
     'UNICODE_JSON': True,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
