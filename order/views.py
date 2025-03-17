@@ -1,9 +1,7 @@
-from django.shortcuts import redirect
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
 from rest_framework import permissions, viewsets
-from datetime import date
+from rest_framework.decorators import action
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 from .models import Category, Product, Receipt
 from .serializers import CategoryProductsSerializer, CategorySerializer, ProductSerializer, ReceiptSerializer
@@ -26,7 +24,12 @@ class ReceiptViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Receipt.objects.filter(created_at__date=date.today())
+        return Receipt.objects.all()
+
+    def list(self, request):
+        queryset = Receipt.objects.actual()
+        serializer = ReceiptSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

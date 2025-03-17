@@ -37,7 +37,15 @@ class Category(ModelWithImage):
     full_name.fget.short_description = 'назва'
 
 
+class ReceiptManager(models.Manager):
+    def actual(self):
+        today = timezone.now().date()
+        return self.filter(created_at__date=today)
+
+
 class Receipt(models.Model):
+    objects = ReceiptManager()
+
     class Meta:
         verbose_name = 'чек'
         verbose_name_plural = 'чеки'
