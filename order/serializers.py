@@ -20,7 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'price', 'category')
+        fields = ('id', 'name', 'price', 'category', 'image')
 
     def get_category(self, obj):
         splited_name = obj.category.full_name.split('->')
@@ -35,20 +35,6 @@ class CategoryProductsSerializer(CategorySerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'image', 'parent', 'products']
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Product
-        fields = ('id', 'name', 'price', 'category')
-
-    def get_category(self, obj):
-        splited_name = obj.category.full_name.split('->')
-        if len(splited_name) == 1:
-            return splited_name[0]
-        return splited_name[1]
 
 
 class ProductItemSerializer(serializers.ModelSerializer):

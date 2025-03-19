@@ -54,6 +54,7 @@ class Receipt(models.Model):
     class PaymentMethod(models.TextChoices):
         CARD = 'CARD', 'Картка'
         CASH = 'CASH', 'Готівка'
+        CARD_TRANSFER = 'CARD_TRANSFER', 'Переказ на картку'
 
     class Status(models.TextChoices):
         OPEN = 'OPEN', 'Відкритий'
@@ -71,7 +72,7 @@ class Receipt(models.Model):
                               null=True, blank=True,
                               verbose_name='місце', on_delete=models.SET_NULL)
     payment_method = models.CharField(
-        max_length=10, choices=PaymentMethod, default=PaymentMethod.CARD)
+        max_length=50, choices=PaymentMethod, default=PaymentMethod.CARD)
     status = models.CharField(
         max_length=10, choices=Status, default=Status.OPEN)
 
