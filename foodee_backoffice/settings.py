@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework.authtoken',
 
+    'adminplus',
+
+
     "user.apps.UserConfig",
     "order.apps.OrderConfig",
     "place.apps.PlaceConfig",
@@ -63,7 +66,7 @@ ROOT_URLCONF = "foodee_backoffice.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

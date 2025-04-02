@@ -36,6 +36,14 @@ class Category(ModelWithImage):
         return '->'.join(reversed(name_list))
     full_name.fget.short_description = 'назва'
 
+    def collect_children(self):
+        """Get all child categories including self."""
+        result = [self]
+        children = Category.objects.filter(parent=self)
+        for child in children:
+            result.extend(child.collect_children())
+        return result
+
 
 class ReceiptManager(models.Manager):
     def actual(self):
@@ -77,7 +85,7 @@ class Receipt(models.Model):
         max_length=10, choices=Status, default=Status.OPEN)
 
     def __str__(self):
-        return 'self.id' if self.number is None else str(self.number)
+        return f'{self.id}' if self.number is None else str(self.number)
 
     @property
     def price(self):

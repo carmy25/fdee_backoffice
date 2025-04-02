@@ -8,3 +8,4 @@ drf-writable-nested
 gunicorn
 psycopg2-binary
 dj-database-url
+django-adminplus

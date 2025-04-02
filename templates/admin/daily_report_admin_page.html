@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% block extrahead %}
+  {{ block.super }}
+  {{ form.media }}
+{% endblock %}
+
+{% block content %}
+  <form action="{% url 'daily_report_admin_page' %}" method="post" style="display: flex; flex-direction: column; width: 100%; padding: 10px;">
+    {% csrf_token %}
+    {{ date_range_form }}
+    <input type="submit" value="Показати" style="margin-top: 10px; align-self: flex;">
+  </form>
+  
+  <table style="width: 100%; margin-top: 20px; border-collapse: collapse; text-align: center;">
+    <thead>
+      <tr>
+        <th style="border: 1px solid #ddd; padding: 8px;">Картка</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Готівка</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Переказ</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">Усього</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th colspan="4" style="border: 1px solid #ddd; padding: 8px;">Бар</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ bar_totals.card }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ bar_totals.cash }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ bar_totals.card_transfer }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ bar_totals.total }}</td>
+      </tr>
+      <tr>
+        <th colspan="4" style="border: 1px solid #ddd; padding: 8px;">Кухня</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ kitchen_totals.card }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ kitchen_totals.cash }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ kitchen_totals.card_transfer }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px;">{{ kitchen_totals.total }}</td>
+      </tr>
+      <tr>
+        <th colspan="4" style="border: 1px solid #ddd; padding: 8px;">Разом</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">{{ overall_totals.card }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">{{ overall_totals.cash }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">{{ overall_totals.card_transfer }}</td>
+        <td style="border: 1px solid #ddd; padding: 8px; font-weight: bold;">{{ overall_totals.total }}</td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}
