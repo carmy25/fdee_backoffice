@@ -16,7 +16,7 @@ RUN set -ex && \
     rm -rf /root/.cache/
 COPY . /code
 
-EXPOSE 8000
+EXPOSE 5432
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate --noinput
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:8000 --workers 2 foodee_backoffice.wsgi"]
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:5432 --workers 2 foodee_backoffice.wsgi"]
