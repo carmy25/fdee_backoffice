@@ -82,6 +82,12 @@ class ReceiptSerializer(WritableNestedModelSerializer):
             ProductItem.objects.create(receipt=receipt, **product_item_data)
         return receipt
 
-    # def update(self, instance, validated_data):
-    #     instance.save()
-    #     return instance
+    def update(self, instance, validated_data):
+        product_items_data = validated_data.pop('product_items', None)
+        instance = super().update(instance, validated_data)
+        if product_items_data is not None:
+            instance.product_items.all().delete()
+            for product_item_data in product_items_data:
+                ProductItem.objects.create(
+                    receipt=instance, **product_item_data)
+        return instance

@@ -65,9 +65,12 @@ def calculate_category_totals(receipts, category_name):
     def get_total_for_payment_method(payment_method):
         category_receipts = receipts.filter(payment_method=payment_method)
         total = 0
+        if payment_method == Receipt.PaymentMethod.CASH:
+            if category_name == 'Бар':
+                pass
         for receipt in category_receipts:
             for item in receipt.product_items.all():
-                if any(cat.id == item.product_type.category_id for cat in category_and_children):
+                if any(cat == item.product_type.category for cat in category_and_children):
                     total += item.total_price()
         return total
 
