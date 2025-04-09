@@ -41,15 +41,20 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows second-level categories to be viewed.
     """
-    queryset = Category.objects.filter(
-        parent__parent__isnull=True).exclude(
-            parent=None).order_by('parent')
     permission_classes = [permissions.IsAuthenticated]
+
+    queryset = Category.objects.filter(
+        parent__isnull=False).order_by('parent')
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return CategoryProductsSerializer
         return CategorySerializer
+
+    def list(self, request):
+        queryset = Category.objects.top_level()
+        serializer = CategorySerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 def calculate_category_totals(receipts, category_name):

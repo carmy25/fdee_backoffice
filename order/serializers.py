@@ -9,18 +9,28 @@ from .models import ProductItem, Receipt, Product, Category
 
 class CategorySerializer(serializers.ModelSerializer):
     parent = serializers.SlugRelatedField('name', read_only=True)
+    root_category = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'image', 'parent']
+        fields = [
+            'id', 'name', 'image', 'parent', 'root_category',
+        ]
+
+    def get_root_category(self, obj):
+        return obj.root_category
 
 
 class ProductSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
+    root_category = serializers.CharField(
+        source='category.root_category', read_only=True)
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'price', 'category', 'image')
+        fields = (
+            'id', 'name', 'price', 'category', 'image',
+            'root_category')
 
     def get_category(self, obj):
         splited_name = obj.category.full_name.split('->')
@@ -30,11 +40,15 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class CategoryProductsSerializer(CategorySerializer):
-    products = ProductSerializer(many=True)
+    products = serializers.SerializerMethodField()
 
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'image', 'parent', 'products']
+    class Meta(CategorySerializer.Meta):
+        fields = CategorySerializer.Meta.fields + ['products']
+
+    def get_products(self, obj):
+        products = obj.get_all_products()
+        serializer = ProductSerializer(products, many=True)
+        return serializer.data
 
 
 class ProductItemSerializer(serializers.ModelSerializer):

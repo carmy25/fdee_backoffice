@@ -6,7 +6,7 @@ from .views import daily_report_admin_page
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'products', views.ProductViewSet)
 router.register(r'receipts', views.ReceiptViewSet, basename='receipt')
-router.register(r'categories', views.CategoryViewSet)
+router.register(r'categories', views.CategoryViewSet, basename='category')
 
 
 urlpatterns = [

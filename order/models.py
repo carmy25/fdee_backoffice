@@ -9,7 +9,16 @@ class ModelWithImage(models.Model):
     image = models.ImageField(blank=True, null=True, verbose_name='картинка')
 
 
+class CategoryManager(models.Manager):
+    def top_level(self):
+        qs = self.filter(parent__isnull=False)
+        return qs.filter(
+            parent__parent__isnull=True).order_by('parent')
+
+
 class Category(ModelWithImage):
+    objects = CategoryManager()
+
     class Meta:
         verbose_name = 'категорія'
         verbose_name_plural = 'категорії'
@@ -43,6 +52,27 @@ class Category(ModelWithImage):
         for child in children:
             result.extend(child.collect_children())
         return result
+
+    def get_root_parent(self):
+        """Get the root parent category."""
+        if self.parent is None:
+            return self
+        return self.parent.get_root_parent()
+
+    @property
+    def root_category(self):
+        """Get the root parent category name."""
+        return self.get_root_parent().name
+    root_category.fget.short_description = 'базова категорія'
+
+    def get_all_products(self):
+        """Get all products in this category and its children."""
+        products = [
+            product
+            for category in self.collect_children()
+            for product in category.products.all()
+        ]
+        return products
 
 
 class ReceiptManager(models.Manager):
