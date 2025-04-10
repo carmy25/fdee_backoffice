@@ -76,7 +76,7 @@ def calculate_category_totals(receipts, category_name):
         for receipt in category_receipts:
             for item in receipt.product_items.all():
                 if any(cat == item.product_type.category for cat in category_and_children):
-                    total += item.total_price()
+                    total += item.total_cost
         return total
 
     return {

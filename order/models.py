@@ -120,7 +120,7 @@ class Receipt(models.Model):
     @property
     def price(self):
         return sum(
-            [p.total_price() for p in self.product_items.all()]
+            [p.total_cost for p in self.product_items.all()]
         )
 
 
@@ -153,9 +153,15 @@ class ProductItem(models.Model):
         verbose_name='кількість')
     name = models.CharField(verbose_name='назва',
                             max_length=200, null=True, blank=True)
+    total_cost = models.DecimalField(
+        max_digits=10, decimal_places=2, editable=False)
 
     def __str__(self):
         return self.product_type.name
 
-    def total_price(self):
+    def save(self, *args, **kw):
+        self.total_cost = self.get_total_cost()
+        super().save(*args, **kw)
+
+    def get_total_cost(self):
         return self.amount * self.product_type.price
