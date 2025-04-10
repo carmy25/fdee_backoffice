@@ -29,7 +29,7 @@ class ProductItemInline(admin.TabularInline):
 
 class ReceiptAdmin(admin.ModelAdmin):
     inlines = (ProductItemInline,)
-    ordering = ['created_at']
+    ordering = ['-created_at']
     exclude = ('updated_at',)
     list_display = (
         'id', 'status', 'place', 'created_at', 'updated_at',
