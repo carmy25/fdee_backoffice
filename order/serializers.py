@@ -56,13 +56,18 @@ class ProductItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductItem
         fields = (
-            'product_type', 'amount', 'name', 'price'
+            'product_type', 'amount', 'name', 'price',
+            'root_category'
         )
 
     price = serializers.SerializerMethodField()
+    root_category = serializers.SerializerMethodField()
 
     def get_price(self, obj):
         return obj.product_type.price
+
+    def get_root_category(self, obj):
+        return obj.product_type.category.root_category
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
