@@ -16,6 +16,15 @@ import sentry_sdk
 
 import dj_database_url
 
+from storages.backends.s3boto3 import S3Boto3Storage
+
+
+class TigrisMediaStorage(S3Boto3Storage):
+
+    def url(self, name):
+        return f"https://{self.bucket_name}.fly.storage.tigris.dev/{name}"
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 FIXTURE_DIRS = [BASE_DIR / "fixtures"]
@@ -200,7 +209,6 @@ if APP_NAME is not None:
     REST_FRAMEWORK["DEFAULT_FILTER_BACKENDS"] = [
         'django_filters.rest_framework.DjangoFilterBackend']
 
-    from .storage_backends import TigrisMediaStorage
 
     STORAGES = {
         "staticfiles": {
