@@ -207,7 +207,7 @@ if APP_NAME is not None:
         },
 
         "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": ".storage_backends.TigrisMediaStorage",
             "OPTIONS": {
                 'querystring_auth': False,
                 'bucket_name': os.environ.get("BUCKET_NAME"),
