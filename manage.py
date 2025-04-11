@@ -6,7 +6,13 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "foodee_backoffice.settings")
+    APP_NAME = os.environ.get("FLY_APP_NAME")
+    if APP_NAME:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                              'foodee_backoffice.settings.fly')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                              'foodee_backoffice.settings.base')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

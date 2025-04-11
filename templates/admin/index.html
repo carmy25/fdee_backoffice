@@ -1,5 +1,10 @@
 {% extends "admin/index.html" %}
 
+
+
+{% block content %}
+  {{ block.super }}  <!-- Include the original content of the index page -->
+
 {% block sidebar %}
     <div id="content-related">
       <div class="module">
@@ -11,4 +16,6 @@
         </ul>
       </div>
     </div>
+{% endblock %}
+
 {% endblock %}
