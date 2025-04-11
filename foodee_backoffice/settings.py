@@ -202,6 +202,10 @@ if APP_NAME is not None:
 
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STORAGES = {
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+
         "default": {
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
