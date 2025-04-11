@@ -1,4 +1,5 @@
 from django.contrib import admin
+from rangefilter.filters import DateRangeFilterBuilder
 
 from order.models import Category, Product, ProductItem, Receipt
 
@@ -34,6 +35,9 @@ class ReceiptAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'status', 'place', 'created_at', 'updated_at',
         'payment_method', 'price',
+    )
+    list_filter = (
+        ("created_at", DateRangeFilterBuilder()),
     )
 
     def has_add_permission(self, request):

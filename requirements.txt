@@ -12,3 +12,4 @@ django-adminplus
 boto3
 django-storages
 django-storages[s3]
+django-admin-rangefilter
