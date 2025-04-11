@@ -209,14 +209,13 @@ if APP_NAME is not None:
     REST_FRAMEWORK["DEFAULT_FILTER_BACKENDS"] = [
         'django_filters.rest_framework.DjangoFilterBackend']
 
-
     STORAGES = {
         "staticfiles": {
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
 
         "default": {
-            "BACKEND": TigrisMediaStorage,
+            "BACKEND": 'settings.TigrisMediaStorage',
             "OPTIONS": {
                 'querystring_auth': False,
                 'bucket_name': os.environ.get("BUCKET_NAME"),
