@@ -19,4 +19,4 @@ COPY . /code
 EXPOSE 5432
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate --noinput
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:5432 --workers 2 foodee_backoffice.wsgi"]
+CMD ["sh", "-c", "DJANGO_SETTINGS_MODULE=foodee_backoffice.settings.fly gunicorn --bind 0.0.0.0:5432 --workers 2 foodee_backoffice.wsgi"]
