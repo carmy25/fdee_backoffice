@@ -215,10 +215,10 @@ if APP_NAME is not None:
         },
 
         "default": {
-            "BACKEND": 'settings.TigrisMediaStorage',
+            "BACKEND": 'foodee_backoffice.settings.TigrisMediaStorage',
             "OPTIONS": {
                 'querystring_auth': False,
-                'bucket_name': os.environ.get("BUCKET_NAME"),
+                'bucket_name': os.environ.get("BUCKET_NAME") or '',
             },
         },
     }
