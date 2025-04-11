@@ -199,3 +199,13 @@ if APP_NAME is not None:
     REST_FRAMEWORK["PAGE_SIZE"] = 10
     REST_FRAMEWORK["DEFAULT_FILTER_BACKENDS"] = [
         'django_filters.rest_framework.DjangoFilterBackend']
+
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                'querystring_auth': False,
+            },
+        },
+    }
