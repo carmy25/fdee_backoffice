@@ -210,6 +210,7 @@ if APP_NAME is not None:
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
                 'querystring_auth': False,
+                'bucket_name': os.environ.get("BUCKET_NAME"),
             },
         },
     }
