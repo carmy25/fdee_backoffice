@@ -18,7 +18,7 @@ Including another URLconf
 from django.urls import include, path
 from django.conf.urls.static import static
 
-from foodee_backoffice import settings
+from django.conf import settings
 from foodee_backoffice.admin import admin
 
 

@@ -1,4 +1,6 @@
 import sentry_sdk
+import os
+import dj_database_url
 from .base import *
 
 APP_NAME = os.environ.get("FLY_APP_NAME")
