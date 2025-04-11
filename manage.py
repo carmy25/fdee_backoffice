@@ -12,7 +12,7 @@ def main():
                               'foodee_backoffice.settings.fly')
     else:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                              'foodee_backoffice.settings.base')
+                              'foodee_backoffice.settings.dev')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
