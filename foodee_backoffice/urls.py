@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.http import HttpResponse
 from django.urls import include, path
 from django.conf.urls.static import static
 
@@ -29,5 +30,6 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path("order/", include('order.urls')),
     path("place/", include('place.urls')),
     path('sentry-debug/', lambda request: 1 / 0),
+    path('ping/', lambda request: HttpResponse('pong')),
 
 ]
