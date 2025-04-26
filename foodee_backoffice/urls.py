@@ -23,13 +23,23 @@ from django.conf import settings
 from foodee_backoffice.admin import admin
 
 
+def sentry_debug(request):
+    # Add some context that Sentry should capture
+    from sentry_sdk import set_context
+    set_context("test_metadata", {
+        "endpoint": "sentry-debug",
+        "test_date": "2025-04-26"
+    })
+    # This will raise a ZeroDivisionError
+    return 1 / 0
+
+
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path("admin/", admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path("user/", include('user.urls')),
     path("order/", include('order.urls')),
     path("place/", include('place.urls')),
-    path('sentry-debug/', lambda request: 1 / 0),
+    path('sentry-debug/', sentry_debug),
     path('ping/', lambda request: HttpResponse('pong')),
-
 ]

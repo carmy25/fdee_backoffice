@@ -1,5 +1,8 @@
 import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
 import os
+import logging
 import dj_database_url
 from .base import *
 
@@ -19,12 +22,27 @@ print(f"Running on fly.io: {APP_NAME}")
 
 sentry_sdk.init(
     dsn=os.environ.get("SENTRY_DSN"),
-    # Add data like request headers and IP for users,
-    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-    send_default_pii=True,
+    enable_tracing=True,
+    # Set traces_sample_rate to 1.0 to capture 100% of transactions for performance monitoring
     traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100% of sampled transactions
     profiles_sample_rate=1.0,
+    # Enable request data capture
+    send_default_pii=True,
+    # Add integrations
+    integrations=[
+        DjangoIntegration(),
+        LoggingIntegration(
+            level=logging.INFO,        # Capture info and above as breadcrumbs
+            event_level=logging.ERROR  # Send errors as events
+        ),
+    ],
+    # Associate users to errors
+    auto_session_tracking=True,
+    # Set a uniform sample rate for transactions
+    sample_rate=1.0,
 )
+
 # print env variables for debugging
 ALLOWED_HOSTS = [f"{APP_NAME}.fly.dev"]
 CSRF_TRUSTED_ORIGINS = [f"https://{APP_NAME}.fly.dev"]
@@ -59,6 +77,54 @@ STORAGES = {
         "OPTIONS": {
             'querystring_auth': False,
             'bucket_name': os.environ.get("BUCKET_NAME") or '',
+        },
+    },
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'level': 'DEBUG',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'INFO',  # Set to INFO to disable SQL query logging
+            'propagate': False,
         },
     },
 }

@@ -41,7 +41,6 @@ class Category(ModelWithImage):
         while (obj := obj.parent) is not None and obj not in already_visited:
             already_visited.append(obj)
             name_list.append(obj.name)
-            print('->'.join(reversed(name_list)))
         return '->'.join(reversed(name_list))
     full_name.fget.short_description = 'назва'
 
