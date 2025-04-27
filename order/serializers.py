@@ -16,6 +16,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'image', 'parent', 'root_category',
         ]
+        ordering = ['order']  # Add ordering by order field
 
     def get_root_category(self, obj):
         return obj.root_category
