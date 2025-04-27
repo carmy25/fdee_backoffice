@@ -2,11 +2,13 @@ from django.db import models
 from django.utils import timezone
 
 
-class ModelWithImage(models.Model):
+class ModelWithImageAndOrder(models.Model):
     class Meta:
         abstract = True
 
     image = models.ImageField(blank=True, null=True, verbose_name='картинка')
+    order = models.PositiveSmallIntegerField(
+        default=100, verbose_name='порядок')
 
 
 class CategoryManager(models.Manager):
@@ -16,12 +18,13 @@ class CategoryManager(models.Manager):
             parent__parent__isnull=True).order_by('parent')
 
 
-class Category(ModelWithImage):
+class Category(ModelWithImageAndOrder):
     objects = CategoryManager()
 
     class Meta:
         verbose_name = 'категорія'
         verbose_name_plural = 'категорії'
+        ordering = ['order']
 
     name = models.CharField(verbose_name="назва", max_length=200)
     parent = models.ForeignKey(
@@ -123,7 +126,7 @@ class Receipt(models.Model):
         )
 
 
-class Product(ModelWithImage):
+class Product(ModelWithImageAndOrder):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукти'
