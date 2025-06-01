@@ -49,23 +49,23 @@ CSRF_TRUSTED_ORIGINS = [f"https://{APP_NAME}.fly.dev"]
 
 DATABASES["default"] = dj_database_url.config(
     conn_max_age=600)
-REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = [
-    'rest_framework.authentication.TokenAuthentication'
-]
-REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
-    'rest_framework.permissions.IsAuthenticated'
-]
-REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
-    'rest_framework.renderers.JSONRenderer'
-]
-REST_FRAMEWORK["DEFAULT_PARSER_CLASSES"] = [
-    'rest_framework.parsers.JSONParser'
-]
-REST_FRAMEWORK["UNICODE_JSON"] = True
-REST_FRAMEWORK["DEFAULT_PAGINATION_CLASS"] = 'rest_framework.pagination.PageNumberPagination'
-REST_FRAMEWORK["PAGE_SIZE"] = 10
-REST_FRAMEWORK["DEFAULT_FILTER_BACKENDS"] = [
-    'django_filters.rest_framework.DjangoFilterBackend']
+# REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = [
+#     'rest_framework.authentication.TokenAuthentication'
+# ]
+# REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
+#     'rest_framework.permissions.IsAuthenticated'
+# ]
+# REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
+#     'rest_framework.renderers.JSONRenderer'
+# ]
+# REST_FRAMEWORK["DEFAULT_PARSER_CLASSES"] = [
+#     'rest_framework.parsers.JSONParser'
+# ]
+# REST_FRAMEWORK["UNICODE_JSON"] = True
+# REST_FRAMEWORK["DEFAULT_PAGINATION_CLASS"] = 'rest_framework.pagination.PageNumberPagination'
+# REST_FRAMEWORK["PAGE_SIZE"] = 10
+# REST_FRAMEWORK["DEFAULT_FILTER_BACKENDS"] = [
+#     'django_filters.rest_framework.DjangoFilterBackend']
 
 STORAGES = {
     "staticfiles": {

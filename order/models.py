@@ -15,7 +15,7 @@ class CategoryManager(models.Manager):
     def top_level(self):
         qs = self.filter(parent__isnull=False)
         return qs.filter(
-            parent__parent__isnull=True).order_by('parent')
+            parent__parent__isnull=True).order_by('parent').order_by('order')
 
 
 class Category(ModelWithImageAndOrder):

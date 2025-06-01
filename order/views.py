@@ -44,7 +44,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     queryset = Category.objects.filter(
-        parent__isnull=False).order_by('parent')
+        parent__isnull=False).order_by('parent').order_by('order')
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
